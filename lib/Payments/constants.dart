@@ -1,0 +1,5 @@
+const apiKey = 'pk_test_51HMThbEsSQ3g7YeCq3oCprQwezpcmXzTKDLE5jEB4VJhosJJUEOLfZgbRyCYX4BgeXJSFfpdx7i329PMISQjfd1u00UlnDocAr';
+const secretKey = 'sk_test_51HMThbEsSQ3g7YeC2IugMeG0iiUB4poqd1FNfmGZz0soSzxT7yT0LpgotsPMC31LNXcySHX37civNvpPEYC7wWA5007at7MLD2';
+const regular_car_wash = 'price_1HPMOSEsSQ3g7YeCjhKDQY1D';
+const standard_car_wash = 'price_1HPMNqEsSQ3g7YeCbKGl7aSc';
+const premium_car_wash = 'price_1HPMMyEsSQ3g7YeChmDlfAp7';
