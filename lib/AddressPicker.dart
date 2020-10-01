@@ -21,7 +21,7 @@ class _AddressPickerState extends State<AddressPicker> {
 
 //  final dbHelper = DatabaseHelper.instance;
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(29.3753875, 47.969764),
+    target: LatLng(55.032474, 2.972818),
     zoom: 14.4746,
   );
   int locationmove = 0;
@@ -129,7 +129,7 @@ class _AddressPickerState extends State<AddressPicker> {
             onCameraMove: (val) {
               setState(() {
                 DeliveryLocationLatLng = val.target;
-                /*getAddress(DeliveryLocationLatLng.latitude.toString(),
+               /* getAddress(DeliveryLocationLatLng.latitude.toString(),
                     DeliveryLocationLatLng.longitude.toString());*/
 
                 _markers.add(
@@ -156,43 +156,47 @@ class _AddressPickerState extends State<AddressPicker> {
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.white),
                 height: 150,
-                child: ListView(
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12),
-                          child: Icon(Icons.location_on),
-                        ),
-                        Expanded(
-                          child: Text(
-                          address,
-                          textAlign: TextAlign.center,
-                        ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      height: 40,
-                      padding: EdgeInsets.only(left: 18,right: 18),
-                      child: RaisedButton(
-                        onPressed: address == ""? null : () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WashingPackage(address)));
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        child: Text("Continue"),
-                        color: address == "" ? Colors.grey : Colors.blue,
-                        textColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: ListView(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12),
+                            child: Icon(Icons.location_on),
+                          ),
+                          Expanded(
+                            child: Text(
+                            address,
+                            textAlign: TextAlign.center,
+                          ),
+                          ),
+                        ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 15
+                      ),
+                      Container(
+                        height: 40,
+                        padding: EdgeInsets.only(left: 18,right: 18),
+                        child: RaisedButton(
+                          onPressed: address == ""? null : () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WashingPackage(address, lat, lng)));
+                          },
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          child: Text("Continue"),
+                          color: address == "" ? Colors.grey : Colors.blue,
+                          textColor: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -222,7 +226,9 @@ class _AddressPickerState extends State<AddressPicker> {
     setState(() {
       address = first.addressLine.toString().replaceAll("'", "");
     });
-    debugPrint("address" + address);
+    debugPrint("address: " + address);
+    debugPrint("Latitude: " + lat.toString());
+    debugPrint("Longitude: " + lng.toString());
 //    _databaseHelper = DatabaseHelper();
 //    int id = 0;
 //    var addr = _databaseHelper.queryAllAddress();

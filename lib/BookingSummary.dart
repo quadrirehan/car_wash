@@ -1,7 +1,9 @@
 import 'dart:core';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'MobileNoVerify.dart';
 
@@ -13,8 +15,19 @@ class BookingSummary extends StatefulWidget {
   String packageDuration;
   String packagePrice;
   String selectedId;
+  double lat;
+  double lng;
 
-  BookingSummary(this.date, this.time, this.address, this.package, this.packageDuration, this.packagePrice, this.selectedId);
+  BookingSummary(
+      this.date,
+      this.time,
+      this.address,
+      this.package,
+      this.packageDuration,
+      this.packagePrice,
+      this.selectedId,
+      this.lat,
+      this.lng);
 
   @override
   _BookingSummaryState createState() => _BookingSummaryState();
@@ -29,6 +42,9 @@ class _BookingSummaryState extends State<BookingSummary> {
   String _packagePrice;
   String _selectedId;
 
+  TextEditingController _carDetails;
+  String radioValue = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -41,6 +57,7 @@ class _BookingSummaryState extends State<BookingSummary> {
       _packageDuration = widget.packageDuration;
       _packagePrice = widget.packagePrice;
       _selectedId = widget.selectedId;
+      _carDetails = TextEditingController();
     });
   }
 
@@ -75,13 +92,13 @@ class _BookingSummaryState extends State<BookingSummary> {
                       children: [
                         Expanded(
                           child: InkWell(
-                            onTap: (){
+                            onTap: () {
                               DatePicker.showDatePicker(context,
                                   onConfirm: (date) {
-                                    setState(() {
-                                      _date = "$date".split(" ")[0];
-                                    });
-                                  });
+                                setState(() {
+                                  _date = "$date".split(" ")[0];
+                                });
+                              });
                             },
                             child: Container(
                               child: Column(
@@ -110,14 +127,13 @@ class _BookingSummaryState extends State<BookingSummary> {
                         ),
                         Expanded(
                           child: InkWell(
-                            onTap: (){
+                            onTap: () {
                               DatePicker.showTimePicker(context,
                                   onConfirm: (time) {
-                                    setState(() {
-                                      _time =
-                                          "$time".split(" ")[1].substring(0, 8);
-                                    });
-                                  });
+                                setState(() {
+                                  _time = "$time".split(" ")[1].substring(0, 8);
+                                });
+                              });
                             },
                             child: Container(
                               child: Column(
@@ -185,9 +201,10 @@ class _BookingSummaryState extends State<BookingSummary> {
                           ),
                           Expanded(
                             child: TextField(
+                              controller: _carDetails,
+                              keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                hintText: "Enter CAR Details..."
-                              ),
+                                  hintText: "Enter CAR Details..."),
                             ),
                           )
                         ],
@@ -257,7 +274,65 @@ class _BookingSummaryState extends State<BookingSummary> {
                       ),
                     ],
                   )),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Online",
+                            style: TextStyle(
+                                // color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Radio(
+                          value: "1",
+                          groupValue: radioValue,
+                          onChanged: (value) {
+                            setState(() {
+                              radioValue = value;
+                              print(radioValue);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "COD",
+                            style: TextStyle(
+                                // color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Radio(
+                          value: "2",
+                          groupValue: radioValue,
+                          onChanged: (value) {
+                            setState(() {
+                              radioValue = value;
+                              print(radioValue);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
               Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -276,10 +351,11 @@ class _BookingSummaryState extends State<BookingSummary> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Text( "${double.parse(_packagePrice)+3+15} £",
+                        Text("${double.parse(_packagePrice) + 3 + 15} £",
                             style: TextStyle(
-                              color: Colors.white,
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                     SizedBox(height: 15),
@@ -287,7 +363,36 @@ class _BookingSummaryState extends State<BookingSummary> {
                       height: 50,
                       child: RaisedButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => MobileNoVerify(_selectedId, _date,)));
+                            if (_carDetails.text.isEmpty || radioValue == "") {
+                              if(radioValue == ""){
+                                Fluttertoast.showToast(
+                                    msg: "Select Payment type",
+                                    textColor: Colors.white,
+                                    backgroundColor: Colors.grey[600],
+                                    fontSize: 16.0,
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastLength: Toast.LENGTH_SHORT);
+                              }else{
+                                Fluttertoast.showToast(
+                                    msg: "Enter Car Details",
+                                    textColor: Colors.white,
+                                    backgroundColor: Colors.grey[600],
+                                    fontSize: 16.0,
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastLength: Toast.LENGTH_SHORT);
+                              }
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MobileNoVerify(
+                                          _selectedId,
+                                          _date,
+                                          _time,
+                                          widget.lat,
+                                          widget.lng,
+                                          _carDetails.text.toString(), radioValue)));
+                            }
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),

@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
 import '../AddressPicker.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,7 +39,7 @@ class _SignUpState extends State<SignUp> {
       setState(() {
         isSignIn = false;
       });
-      Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddressPicker()));
       return Fluttertoast.showToast(
           msg: response.body,
           toastLength: Toast.LENGTH_LONG,
@@ -68,8 +66,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
+      body: Padding(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Center(
           child: Form(

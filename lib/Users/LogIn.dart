@@ -42,15 +42,10 @@ class _LogInState extends State<LogIn> {
           msg: "Invalid Email and Password...",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
-//                          timeInSecForIosWeb: 1,
           backgroundColor: Colors.grey[600],
           textColor: Colors.white,
           fontSize: 16.0);
-      print("Data Nahi Hai Bhai");
     } else {
-      setState(() {
-        isLogin = false;
-      });
       DatabaseHelper db = DatabaseHelper.instance;
       db
           .insertUser(
@@ -163,12 +158,6 @@ class _LogInState extends State<LogIn> {
                         borderRadius: BorderRadius.circular(30)),
                     onPressed: isLogin == false
                         ? () {
-                            // if (_formKey.currentState.validate()) {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (context) => AddressPicker()));
-                            // } else {}
                             if (_email.text.isNotEmpty &&
                                 _pass.text.isNotEmpty) {
                               _loginUser();

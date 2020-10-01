@@ -4,7 +4,6 @@ import 'package:car_wash/Utils/DatabaseHelper.dart';
 import 'package:car_wash/Utils/UI.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'Transactions.dart';
 import 'constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:http/http.dart' as http;
@@ -13,9 +12,15 @@ class CheckoutPage extends StatefulWidget {
   final String sessionId;
   final String selectedId;
   String date;
+  String time;
+  double lat;
+  double lng;
+  String carDetails;
+  String paymentType;
 
   // const CheckoutPage(String sessionId, {Key key, this.sessionId}) : super(key: key);
-  CheckoutPage(this.sessionId, this.selectedId, this.date);
+  CheckoutPage(this.sessionId, this.selectedId, this.date, this.time, this.lat,
+      this.lng, this.carDetails, this.paymentType);
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -42,7 +47,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   Future<void> _order() async {
     url = menifo.getBaseUrl() +
-        "Order?customer_id=$userId&appointment_date=${widget.date}&package_id=${widget.selectedId}&payment_status=$_paymentStatus";
+        "OrderCreate?customer_id=$userId&appointment_date=${widget.date}&appointment_time=${widget.time}&package_id=${widget.selectedId}&payment_status=$_paymentStatus&customer_lat=${widget.lat}&customer_long=${widget.lng}&customer_car=${widget.carDetails}&payment_type=${widget.paymentType}&washer_id=8";
     var response = await http
         .get(Uri.encodeFull(url), headers: {'Accept': "application/json"});
     print(response.body.toString());
@@ -79,15 +84,34 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   style: AlertStyle(
                     isOverlayTapDismiss: false,
                   ),
-                  buttons: [],
+                  buttons: [
+                    DialogButton(
+                        child: Text(
+                          "Close",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.blue,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context, MaterialPageRoute(builder: (context) => AllBookings()));
+                        })
+                  ],
                   closeFunction: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => AllBookings()));
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (context) => AllBookings()));
                   }).show();
               // Navigator.of(context).pop('success');
             } else if (request.url.startsWith('https://cancel.com')) {
@@ -95,7 +119,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
               setState(() {
                 _paymentStatus = 0;
               });
-              _order();
               Alert(
                   context: context,
                   type: AlertType.error,
@@ -104,15 +127,34 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   style: AlertStyle(
                     isOverlayTapDismiss: false,
                   ),
-                  buttons: [],
+                  buttons: [
+                    DialogButton(
+                        child: Text(
+                          "Close",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.blue,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context, MaterialPageRoute(builder: (context) => AllBookings()));
+                        })
+                  ],
                   closeFunction: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => AllBookings()));
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (context) => AllBookings()));
                   }).show();
             }
             return NavigationDecision.navigate;

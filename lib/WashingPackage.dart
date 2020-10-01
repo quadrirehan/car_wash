@@ -10,8 +10,10 @@ import 'Utils/UI.dart';
 
 class WashingPackage extends StatefulWidget {
   String address;
+  double lat;
+  double lng;
 
-  WashingPackage(this.address);
+  WashingPackage(this.address, this.lat, this.lng);
 
   @override
   _WashingPackageState createState() => _WashingPackageState();
@@ -26,7 +28,7 @@ class _WashingPackageState extends State<WashingPackage> {
   String _time = "Select Time";
 
   String selectedId;
-  String packagePrice;
+  String packagePrice = "0";
   String _package = "";
   String packageDuration;
 
@@ -60,82 +62,6 @@ class _WashingPackageState extends State<WashingPackage> {
             shrinkWrap: true,
             children: [
               Container(
-                height: 100,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.blue,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: (){
-                          DatePicker.showDatePicker(context,
-                              onConfirm: (date) {
-                                setState(() {
-                                  _date = "$date".split(" ")[0];
-                                });
-                              });
-                        },
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.date_range,
-                                  size: 30, color: Colors.white),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  _date,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: (){
-                          DatePicker.showTimePicker(context,
-                              onConfirm: (time) {
-                                setState(() {
-                                  _time = "$time".split(" ")[1].substring(0, 8);
-                                });
-                              });
-                        },
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.access_time,
-                                  size: 30, color: Colors.white),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(_time,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
                 height: 120,
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -148,19 +74,19 @@ class _WashingPackageState extends State<WashingPackage> {
                       "Only Home Services Awesome Feature !",
                       textAlign: TextAlign.center,
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     Text(
                       "Complete car cleaning.",
                       textAlign: TextAlign.center,
                       style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
                     Text(
                       "Save time. Save money. Door step service.",
                       textAlign: TextAlign.center,
                       style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
                   ],
                 ),
@@ -174,7 +100,7 @@ class _WashingPackageState extends State<WashingPackage> {
                       return ListView.builder(
                           shrinkWrap: true,
                           itemCount:
-                              snap.data.length != 0 ? snap.data.length : 0,
+                          snap.data.length != 0 ? snap.data.length : 0,
                           itemBuilder: (context, index) {
                             return ListView(
                               shrinkWrap: true,
@@ -188,9 +114,9 @@ class _WashingPackageState extends State<WashingPackage> {
                                       packagePrice =
                                           snap.data[index]['package_price'].toString();
                                       _package =
-                                          snap.data[index]['package_name'];
+                                      snap.data[index]['package_name'];
                                       packageDuration =
-                                          snap.data[index]['package_duration'];
+                                      snap.data[index]['package_duration'];
                                     });
                                   },
                                   child: Container(
@@ -198,7 +124,7 @@ class _WashingPackageState extends State<WashingPackage> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                       color: selectedId ==
-                                              snap.data[index]['package_id']
+                                          snap.data[index]['package_id'].toString()
                                           ? colour
                                           : Colors.white,
                                     ),
@@ -207,30 +133,30 @@ class _WashingPackageState extends State<WashingPackage> {
                                       children: [
                                         Expanded(
                                             child: Text(
-                                          snap.data[index]['package_name'],
-                                          style: TextStyle(
-                                              color: selectedId ==
+                                              snap.data[index]['package_name'],
+                                              style: TextStyle(
+                                                  color: selectedId ==
                                                       snap.data[index]
-                                                          ['package_id']
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        )),
+                                                      ['package_id'].toString()
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
                                         Container(
                                             height: 20,
                                             width: 40,
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                BorderRadius.circular(10),
                                                 color: Colors.grey),
                                             child: Center(
                                               child: Text(
                                                   snap.data[index]
-                                                      ['package_duration'],
+                                                  ['package_duration'],
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.bold)),
+                                                      FontWeight.bold)),
                                             )),
                                         SizedBox(
                                           width: 8,
@@ -240,7 +166,7 @@ class _WashingPackageState extends State<WashingPackage> {
                                           width: 50,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                               color: Colors.teal),
                                           child: Center(
                                             child: Text(
@@ -248,7 +174,7 @@ class _WashingPackageState extends State<WashingPackage> {
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:
-                                                        FontWeight.bold)),
+                                                    FontWeight.bold)),
                                           ),
                                         ),
                                       ],
@@ -291,7 +217,7 @@ class _WashingPackageState extends State<WashingPackage> {
                           return ListView.builder(
                               shrinkWrap: true,
                               itemCount:
-                                  snap.data.length != 0 ? snap.data.length : 0,
+                              snap.data.length != 0 ? snap.data.length : 0,
                               itemBuilder: (context, index) {
                                 return ListView(
                                   shrinkWrap: true,
@@ -300,9 +226,9 @@ class _WashingPackageState extends State<WashingPackage> {
                                       children: [
                                         Expanded(
                                             child: Text(
-                                          snap.data[index]['item_name'],
-                                          style: TextStyle(color: Colors.white),
-                                        )),
+                                              snap.data[index]['item_name'],
+                                              style: TextStyle(color: Colors.white),
+                                            )),
                                         Icon(
                                           Icons.done,
                                           color: Colors.green,
@@ -318,9 +244,9 @@ class _WashingPackageState extends State<WashingPackage> {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Center(
                                 child: Text(
-                              "No Data Found",
-                              style: TextStyle(color: Colors.white),
-                            )),
+                                  "No Data Found",
+                                  style: TextStyle(color: Colors.white),
+                                )),
                           );
                         }
                       } else if (snap.hasError) {
@@ -328,9 +254,9 @@ class _WashingPackageState extends State<WashingPackage> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Center(
                               child: Text(
-                            "Try Again Later",
-                            style: TextStyle(color: Colors.white),
-                          )),
+                                "Try Again Later",
+                                style: TextStyle(color: Colors.white),
+                              )),
                         );
                       } else {
                         return Padding(
@@ -342,6 +268,85 @@ class _WashingPackageState extends State<WashingPackage> {
                   )),
               SizedBox(height: 8),
               Container(
+                height: 100,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.blue,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: (){
+                          DatePicker.showDatePicker(context,
+                              minTime: DateTime.now(),
+                              onConfirm: (date) {
+                                setState(() {
+                                  _date = "$date".split(" ")[0];
+                                });
+                              });
+                        },
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.date_range,
+                                  size: 30, color: Colors.white),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  _date,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: (){
+                          DatePicker.showTimePicker(context,
+                              currentTime: DateTime.now().add(Duration(minutes: 30)),
+                              showSecondsColumn: false,
+                              onConfirm: (time) {
+                                setState(() {
+                                  _time = "$time".split(" ")[1].substring(0, 8);
+                                });
+                              });
+                        },
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.access_time,
+                                  size: 30, color: Colors.white),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(_time,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -350,10 +355,10 @@ class _WashingPackageState extends State<WashingPackage> {
                   children: [
                     Expanded(
                         child: Text(
-                      "$packagePrice £",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    )),
+                          "$packagePrice £",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        )),
                     Expanded(
                       child: Container(
                         height: 40,
@@ -371,7 +376,7 @@ class _WashingPackageState extends State<WashingPackage> {
                                           _package,
                                           packageDuration,
                                           packagePrice,
-                                      selectedId)));
+                                          selectedId, widget.lat, widget.lng)));
                             }
                             // else if(selectedId != null && _date == "Select Date" && _time != "Select Time"){
                             //   Fluttertoast.showToast(
@@ -395,12 +400,12 @@ class _WashingPackageState extends State<WashingPackage> {
                             // }
                             else if(selectedId == null && _date != "Select Date" && _time != "Select Time"){
                               Fluttertoast.showToast(
-                                msg: "Select Your Package First !",
-                                backgroundColor: Colors.grey,
-                                textColor: Colors.white,
-                                gravity: ToastGravity.BOTTOM,
-                                toastLength: Toast.LENGTH_LONG,
-                                fontSize: 16.0
+                                  msg: "Select Your Package First !",
+                                  backgroundColor: Colors.grey,
+                                  textColor: Colors.white,
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastLength: Toast.LENGTH_LONG,
+                                  fontSize: 16.0
                               );
                             }
                             else{

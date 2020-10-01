@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper{
   //TODO: PASS "DATABASE_NAME.db"
-  String _databaseName = "carwasher.db";
+  String _databaseName = "carwash.db";
   int _databaseVersion = 1;
 
   DatabaseHelper._privateConstructor();
@@ -49,5 +49,10 @@ class DatabaseHelper{
   Future<List> getUser() async{
     Database db = await instance.database;
     return db.rawQuery("SELECT * FROM user");
+  }
+  
+  Future<void> deleteUser() async{
+    Database db = await instance.database;
+    db.rawDelete("DELETE FROM user");
   }
 }	//class DatabaseHelper close
