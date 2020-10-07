@@ -53,136 +53,241 @@ class _AllBookingsState extends State<AllBookings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("All Bookings"),
-        actions: <Widget>[
-          InkWell(onTap: (){
-            setState(() {
-              delay = 1;
-            });
-           reloadAllBookings();
-            setState(() {
-              futureAllBookings = _getBookings();
-            });
-          },
-              child: Icon(Icons.refresh, color: Colors.white)),
-          PopupMenuButton<String>(
-            onSelected: _selected,
-            itemBuilder: (BuildContext context) {
-              return {'Logout'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.grey[300],
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("All Bookings"),
+          actions: <Widget>[
+            InkWell(onTap: (){
+              setState(() {
+                delay = 1;
+              });
+             reloadAllBookings();
+              setState(() {
+                futureAllBookings = _getBookings();
+              });
             },
-          ),
-        ],
-      ),
-      body: delay == 0 ? Padding(
-        padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-        child: FutureBuilder(
-            future: futureAllBookings,
-            builder: (context, snap) {
-              if (snap.hasData) {
-                if (snap.data.toString() == "[]") {
-                  return Center(child: Text("No Previous Bookings"));
-                } else {
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snap.data.length != 0 ? snap.data.length : 0,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => OrderDetails(
-                                        userName,
-                                        userMobile,
-                                        snap.data[index]['order_id'].toString(),
-                                        userId)));
-                          },
-                          child: Container(
-                            height: 70,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: ListTile(
-                                leading: Text(snap.data[index]['booking_date']
-                                    .toString()
-                                    .split(" ")[0]),
-                                title: Text(
-                                  "Package: " +
-                                              snap.data[index]['package_id']
-                                                  .toString() ==
-                                          "1"
-                                      ? "Premium Wash"
-                                      : snap.data[index]['package_id']
-                                                  .toString() ==
-                                              "2"
-                                          ? "Standard Wash"
-                                          : "Regular Wash",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(snap.data[index]
-                                        ['appointment_date']
-                                    .toString()
-                                    .split(" ")[0]),
-                                trailing: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Order Status",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    snap.data[index]['order_status']
-                                                .toString() ==
-                                            "0"
-                                        ? Text("Pending")
-                                        : snap.data[index]['order_status']
-                                                    .toString() ==
+                child: Icon(Icons.refresh, color: Colors.white)),
+            PopupMenuButton<String>(
+              onSelected: _selected,
+              itemBuilder: (BuildContext context) {
+                return {'Logout'}.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            ),
+          ],
+          bottom: TabBar(labelPadding: EdgeInsets.all(8.0), tabs: [
+              Text("Pending", style: TextStyle(fontSize: 18)),
+            Text("History", style: TextStyle(fontSize: 18)),]),
+        ),
+        body: delay == 0 ? TabBarView(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+              child: FutureBuilder(
+                  future: futureAllBookings,
+                  builder: (context, snap) {
+                    if (snap.hasData) {
+                      if (snap.data.toString() == "[]") {
+                        return Center(child: Text("No Previous Bookings"));
+                      } else {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snap.data.length != 0 ? snap.data.length : 0,
+                            itemBuilder: (context, index) {
+                              return snap.data[index]['order_status'].toString() == "0" ? InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => OrderDetails(
+                                              userName,
+                                              userMobile,
+                                              snap.data[index]['order_id'].toString(),
+                                              userId)));
+                                },
+                                child: Container(
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  child: ListTile(
+                                      leading: Text(snap.data[index]['booking_date']
+                                          .toString()
+                                          .split(" ")[0]),
+                                      title: Text(
+                                        "Package: " +
+                                                    snap.data[index]['package_id']
+                                                        .toString() ==
                                                 "1"
-                                            ? Text("Completed",
-                                                style: TextStyle(
-                                                    color: Colors.green))
-                                            : Text(
-                                                "Cancelled",
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              )
-                                  ],
-                                )),
-                          ),
-                        );
-                      });
-                }
-              } else if (snap.hasError) {
-                return Center(
-                  child: Text("Try Again"),
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }),
-      ) : Center(child: CircularProgressIndicator(),),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddressPicker()));
-        },
-        child: Icon(Icons.add),
-        tooltip: "Book Your Car Wash",
+                                            ? "Premium Wash"
+                                            : snap.data[index]['package_id']
+                                                        .toString() ==
+                                                    "2"
+                                                ? "Standard Wash"
+                                                : "Regular Wash",
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(snap.data[index]
+                                              ['appointment_date']
+                                          .toString()
+                                          .split(" ")[0]),
+                                      trailing: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order Status",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          snap.data[index]['order_status']
+                                                      .toString() ==
+                                                  "0"
+                                              ? Text("Pending")
+                                              : snap.data[index]['order_status']
+                                                          .toString() ==
+                                                      "1"
+                                                  ? Text("Completed",
+                                                      style: TextStyle(
+                                                          color: Colors.green))
+                                                  : Text(
+                                                      "Cancelled",
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    )
+                                        ],
+                                      )),
+                                ),
+                              ) : Container();
+                            });
+                      }
+                    } else if (snap.hasError) {
+                      return Center(
+                        child: Text("Try Again"),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+              child: FutureBuilder(
+                  future: futureAllBookings,
+                  builder: (context, snap) {
+                    if (snap.hasData) {
+                      if (snap.data.toString() == "[]") {
+                        return Center(child: Text("No Previous Bookings"));
+                      } else {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snap.data.length != 0 ? snap.data.length : 0,
+                            itemBuilder: (context, index) {
+                              return snap.data[index]['order_status'].toString() == "1" ? InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => OrderDetails(
+                                              userName,
+                                              userMobile,
+                                              snap.data[index]['order_id'].toString(),
+                                              userId)));
+                                },
+                                child: Container(
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  child: ListTile(
+                                      leading: Text(snap.data[index]['booking_date']
+                                          .toString()
+                                          .split(" ")[0]),
+                                      title: Text(
+                                        "Package: " +
+                                                    snap.data[index]['package_id']
+                                                        .toString() ==
+                                                "1"
+                                            ? "Premium Wash"
+                                            : snap.data[index]['package_id']
+                                                        .toString() ==
+                                                    "2"
+                                                ? "Standard Wash"
+                                                : "Regular Wash",
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(snap.data[index]
+                                              ['appointment_date']
+                                          .toString()
+                                          .split(" ")[0]),
+                                      trailing: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Order Status",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          snap.data[index]['order_status']
+                                                      .toString() ==
+                                                  "0"
+                                              ? Text("Pending")
+                                              : snap.data[index]['order_status']
+                                                          .toString() ==
+                                                      "1"
+                                                  ? Text("Completed",
+                                                      style: TextStyle(
+                                                          color: Colors.green))
+                                                  : Text(
+                                                      "Cancelled",
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    )
+                                        ],
+                                      )),
+                                ),
+                              ) : Container();
+                            });
+                      }
+                    } else if (snap.hasError) {
+                      return Center(
+                        child: Text("Try Again"),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
+            ),
+          ],
+        ) : Center(child: CircularProgressIndicator(),),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddressPicker()));
+          },
+          child: Icon(Icons.add),
+          tooltip: "Book Your Car Wash",
+        ),
       ),
     );
   }

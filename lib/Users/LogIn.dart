@@ -194,7 +194,7 @@ class _LogInState extends State<LogIn> {
                             decoration: TextDecoration.underline)),
                   ],
                 ),
-                SizedBox(height: 180),
+                SizedBox(height: 155),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

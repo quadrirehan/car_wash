@@ -61,10 +61,10 @@ class _VerifyOTPState extends State<VerifyOTP> {
     // return jsonDecode(response.body);
 
     if (response.body == "x0") {
-      if (widget.paymentType.toString() == "2") {
+      /*if (widget.paymentType.toString() == "2") {
         if(userId != null){
           url = menifo.getBaseUrl() +
-              "OrderCreate?customer_id=$userId&appointment_date=${widget.date}&appointment_time=${widget.time}&package_id=${widget.selectedId}&payment_status=0&customer_lat=${widget.lat}&customer_long=${widget.lng}&customer_car=${widget.carDetails}&payment_type=${widget.paymentType}&washer_id=8";
+              "OrderCreate?customer_id=$userId&appointment_date=${widget.date}&appointment_time=${widget.time}&package_id=${widget.selectedId}&payment_status=0&customer_lat=${widget.lat}&customer_long=${widget.lng}&customer_car=${widget.carDetails}&payment_type=${widget.paymentType}";
           var response = await http
               .get(Uri.encodeFull(url), headers: {'Accept': "application/json"}).then((value) {
                 print("Value: ::: : ${value.body.toString()}");
@@ -111,8 +111,8 @@ class _VerifyOTPState extends State<VerifyOTP> {
           print("User Id: ::: : $userId");
         }
 
-      }
-      else {
+      }*/
+      // else {
         final sessionId = await Server().createCheckout(_selectedId);
         print("Session Id:" + sessionId);
         Fluttertoast.showToast(
@@ -135,7 +135,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
               widget.carDetails,
               widget.paymentType),
         ));
-      }
+      // }
     } else {
       setState(() {
         isLoading = false;

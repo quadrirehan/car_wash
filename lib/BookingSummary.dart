@@ -43,7 +43,7 @@ class _BookingSummaryState extends State<BookingSummary> {
   String _selectedId;
 
   TextEditingController _carDetails;
-  String radioValue = "";
+  String radioValue = "1";
 
   @override
   void initState() {
@@ -94,6 +94,7 @@ class _BookingSummaryState extends State<BookingSummary> {
                           child: InkWell(
                             onTap: () {
                               DatePicker.showDatePicker(context,
+                                  minTime: DateTime.now(),
                                   onConfirm: (date) {
                                 setState(() {
                                   _date = "$date".split(" ")[0];
@@ -129,6 +130,8 @@ class _BookingSummaryState extends State<BookingSummary> {
                           child: InkWell(
                             onTap: () {
                               DatePicker.showTimePicker(context,
+                                  currentTime: DateTime.now().add(Duration(hours: 3)),
+                                  showSecondsColumn: false,
                                   onConfirm: (time) {
                                 setState(() {
                                   _time = "$time".split(" ")[1].substring(0, 8);
@@ -277,62 +280,62 @@ class _BookingSummaryState extends State<BookingSummary> {
               SizedBox(
                 height: 15,
               ),
-              Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Online",
-                            style: TextStyle(
-                                // color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Radio(
-                          value: "1",
-                          groupValue: radioValue,
-                          onChanged: (value) {
-                            setState(() {
-                              radioValue = value;
-                              print(radioValue);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "COD",
-                            style: TextStyle(
-                                // color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Radio(
-                          value: "2",
-                          groupValue: radioValue,
-                          onChanged: (value) {
-                            setState(() {
-                              radioValue = value;
-                              print(radioValue);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 15),
+              // Container(
+              //   padding: EdgeInsets.only(left: 15, right: 15),
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(8),
+              //       color: Colors.white),
+              //   child: ListView(
+              //     shrinkWrap: true,
+              //     children: [
+              //       Row(
+              //         children: [
+              //           Expanded(
+              //             child: Text(
+              //               "Online",
+              //               style: TextStyle(
+              //                   // color: Colors.white,
+              //                   fontWeight: FontWeight.bold),
+              //             ),
+              //           ),
+              //           Radio(
+              //             value: "1",
+              //             groupValue: radioValue,
+              //             onChanged: (value) {
+              //               setState(() {
+              //                 radioValue = value;
+              //                 print(radioValue);
+              //               });
+              //             },
+              //           ),
+              //         ],
+              //       ),
+              //       Row(
+              //         children: [
+              //           Expanded(
+              //             child: Text(
+              //               "COD",
+              //               style: TextStyle(
+              //                   // color: Colors.white,
+              //                   fontWeight: FontWeight.bold),
+              //             ),
+              //           ),
+              //           Radio(
+              //             value: "2",
+              //             groupValue: radioValue,
+              //             onChanged: (value) {
+              //               setState(() {
+              //                 radioValue = value;
+              //                 print(radioValue);
+              //               });
+              //             },
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 15),
               Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -363,8 +366,8 @@ class _BookingSummaryState extends State<BookingSummary> {
                       height: 50,
                       child: RaisedButton(
                           onPressed: () {
-                            if (_carDetails.text.isEmpty || radioValue == "") {
-                              if(radioValue == ""){
+                            if (_carDetails.text.isEmpty /*|| radioValue == ""*/) {
+                              /*if(radioValue == ""){
                                 Fluttertoast.showToast(
                                     msg: "Select Payment type",
                                     textColor: Colors.white,
@@ -380,7 +383,14 @@ class _BookingSummaryState extends State<BookingSummary> {
                                     fontSize: 16.0,
                                     gravity: ToastGravity.BOTTOM,
                                     toastLength: Toast.LENGTH_SHORT);
-                              }
+                              }*/
+                              Fluttertoast.showToast(
+                                  msg: "Enter Car Details",
+                                  textColor: Colors.white,
+                                  backgroundColor: Colors.grey[600],
+                                  fontSize: 16.0,
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastLength: Toast.LENGTH_SHORT);
                             } else {
                               Navigator.push(
                                   context,

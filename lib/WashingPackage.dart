@@ -62,7 +62,6 @@ class _WashingPackageState extends State<WashingPackage> {
             shrinkWrap: true,
             children: [
               Container(
-                height: 120,
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
@@ -315,7 +314,7 @@ class _WashingPackageState extends State<WashingPackage> {
                       child: InkWell(
                         onTap: (){
                           DatePicker.showTimePicker(context,
-                              currentTime: DateTime.now().add(Duration(minutes: 30)),
+                              currentTime: DateTime.now().add(Duration(hours: 3)),
                               showSecondsColumn: false,
                               onConfirm: (time) {
                                 setState(() {

@@ -310,14 +310,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ))
                     ],
                   ),
-                  SizedBox(height: 40),
+                  /*SizedBox(height: 40),
                   orderStatus.toString() == "0" ? Container(
                     height: 40,
                     child: RaisedButton(
                       onPressed: () {
                         Alert(
                           context: context,
-                          title: "Are you sure, you want to cancel this  Order",
+                          title: "Are you sure, you want to cancel this Order",
                           style: AlertStyle(isCloseButton: false, isOverlayTapDismiss: false),
                           type: AlertType.warning,
                           buttons: [
@@ -333,7 +333,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 })
                           ],
                           closeFunction: (){
-
+                            Navigator.pop(context);
                           }
                         ).show();
                       },
@@ -342,7 +342,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       color: Colors.blue,
                       textColor: Colors.white,
                     ),
-                  ) : Container()
+                  ) : Container()*/
                 ],
               ),
             )

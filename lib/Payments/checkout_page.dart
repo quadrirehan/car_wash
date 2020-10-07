@@ -47,7 +47,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   Future<void> _order() async {
     url = menifo.getBaseUrl() +
-        "OrderCreate?customer_id=$userId&appointment_date=${widget.date}&appointment_time=${widget.time}&package_id=${widget.selectedId}&payment_status=$_paymentStatus&customer_lat=${widget.lat}&customer_long=${widget.lng}&customer_car=${widget.carDetails}&payment_type=${widget.paymentType}&washer_id=8";
+        "OrderCreate?customer_id=$userId&appointment_date=${widget.date}&appointment_time=${widget.time}&package_id=${widget.selectedId}&payment_status=$_paymentStatus&customer_lat=${widget.lat}&customer_long=${widget.lng}&customer_car=${widget.carDetails}&payment_type=${widget.paymentType}";
     var response = await http
         .get(Uri.encodeFull(url), headers: {'Accept': "application/json"});
     print(response.body.toString());
@@ -188,14 +188,14 @@ const kStripeHtmlPage = '''
 <script src="https://js.stripe.com/v3/"></script>
 <head><title>Stripe checkout</title></head>
 <style>
-  h3 {
+  h4 {
 	text-align:center;
 	display:block;
-	margin-top:45vh;
+	margin-top:50vh;
      }
 </style>
 <body>
-<h1>Redirecting to Payment Gateway.....</h1>
+<h4>Redirecting to Payment Gateway.....</h4>
 </body>
 </html>
 ''';
